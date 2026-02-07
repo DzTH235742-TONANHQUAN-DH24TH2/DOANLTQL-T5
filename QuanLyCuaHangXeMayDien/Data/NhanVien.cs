@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace QuanLyCuaHangXeMayDien.Data
 {
@@ -16,10 +15,15 @@ namespace QuanLyCuaHangXeMayDien.Data
         public string? DienThoai { get; set; }
 
         [StringLength(100)]
-        public string? Email { get; set; }
+        public string? DiaChi { get; set; }
+
+        [StringLength(50)]
+        public string? TenDangNhap { get; set; }
 
         [Required]
-        [StringLength(50)]
+        [StringLength(100)]
         public string MatKhau { get; set; } = null!;
+
+        public bool QuyenHan { get; set; }
     }
 }

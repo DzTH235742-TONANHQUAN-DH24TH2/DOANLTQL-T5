@@ -37,9 +37,9 @@ namespace QuanLyCuaHangXeMayDien.Forms
             bindingSource.DataSource = nsx;
 
             txtTenHangXe.DataBindings.Clear();
-            // Nếu trong file NhaSanXuat.cs bạn đặt tên biến khác thì sửa lại chữ "TenNhaSanXuat" nhé
             txtTenHangXe.DataBindings.Add("Text", bindingSource, "TenNhaSanXuat", false, DataSourceUpdateMode.Never);
 
+            dataGridView.AutoGenerateColumns = false;
             dataGridView.DataSource = bindingSource;
         }
 

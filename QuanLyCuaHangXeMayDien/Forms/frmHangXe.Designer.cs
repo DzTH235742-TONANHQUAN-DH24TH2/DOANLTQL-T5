@@ -39,7 +39,6 @@
             label1 = new Label();
             groupBox2 = new GroupBox();
             dataGridView = new DataGridView();
-            ID = new DataGridViewTextBoxColumn();
             Ten = new DataGridViewTextBoxColumn();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
@@ -71,6 +70,7 @@
             btnThoat.TabIndex = 7;
             btnThoat.Text = "Thoát";
             btnThoat.UseVisualStyleBackColor = true;
+            btnThoat.Click += btnXoa_Click;
             // 
             // btnHuyBo
             // 
@@ -80,6 +80,7 @@
             btnHuyBo.TabIndex = 6;
             btnHuyBo.Text = "Hủy bỏ";
             btnHuyBo.UseVisualStyleBackColor = true;
+            btnHuyBo.Click += btnHuyBo_Click;
             // 
             // btnLuu
             // 
@@ -90,6 +91,7 @@
             btnLuu.TabIndex = 5;
             btnLuu.Text = "Lưu";
             btnLuu.UseVisualStyleBackColor = true;
+            btnLuu.Click += btnLuu_Click;
             // 
             // btnXoa
             // 
@@ -100,6 +102,7 @@
             btnXoa.TabIndex = 4;
             btnXoa.Text = "Xóa";
             btnXoa.UseVisualStyleBackColor = true;
+            btnXoa.Click += btnXoa_Click;
             // 
             // btnSua
             // 
@@ -109,6 +112,7 @@
             btnSua.TabIndex = 3;
             btnSua.Text = "Sửa";
             btnSua.UseVisualStyleBackColor = true;
+            btnSua.Click += btnSua_Click;
             // 
             // btnThem
             // 
@@ -152,20 +156,13 @@
             dataGridView.AllowUserToDeleteRows = false;
             dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView.Columns.AddRange(new DataGridViewColumn[] { ID, Ten });
+            dataGridView.Columns.AddRange(new DataGridViewColumn[] { Ten });
             dataGridView.Location = new Point(6, 28);
             dataGridView.MultiSelect = false;
             dataGridView.Name = "dataGridView";
             dataGridView.RowHeadersWidth = 62;
             dataGridView.Size = new Size(753, 225);
             dataGridView.TabIndex = 0;
-            // 
-            // ID
-            // 
-            ID.DataPropertyName = "ID";
-            ID.HeaderText = "ID";
-            ID.MinimumWidth = 8;
-            ID.Name = "ID";
             // 
             // Ten
             // 
@@ -204,7 +201,6 @@
         private Label label1;
         private GroupBox groupBox2;
         private DataGridView dataGridView;
-        private DataGridViewTextBoxColumn ID;
         private DataGridViewTextBoxColumn Ten;
     }
 }
