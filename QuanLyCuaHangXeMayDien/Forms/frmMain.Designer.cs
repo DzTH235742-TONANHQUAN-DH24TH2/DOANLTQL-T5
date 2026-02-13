@@ -153,14 +153,15 @@
             // 
             // label1
             // 
-            label1.AutoSize = true;
+            label1.Dock = DockStyle.Fill;
             label1.Font = new Font("Segoe UI Black", 9F, FontStyle.Bold, GraphicsUnit.Point, 163);
             label1.ForeColor = SystemColors.ButtonHighlight;
-            label1.Location = new Point(187, 31);
+            label1.Location = new Point(0, 0);
             label1.Name = "label1";
-            label1.Size = new Size(327, 25);
+            label1.Size = new Size(703, 79);
             label1.TabIndex = 0;
             label1.Text = "QUẢN LÝ CỬA HÀNG XE MÁY ĐIỆN";
+            label1.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // pnlContent
             // 
@@ -186,7 +187,6 @@
             Text = "Trang Chủ";
             panel1.ResumeLayout(false);
             panel2.ResumeLayout(false);
-            panel2.PerformLayout();
             ResumeLayout(false);
         }
 

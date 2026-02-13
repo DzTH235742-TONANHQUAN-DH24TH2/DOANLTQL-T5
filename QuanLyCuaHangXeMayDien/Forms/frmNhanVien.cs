@@ -159,5 +159,7 @@ namespace QuanLyCuaHangXeMayDien.Forms
         {
             this.Close();
         }
+
+        
     }
 }

@@ -66,27 +66,46 @@ namespace QuanLyCuaHangXeMayDien.Forms
             if (string.IsNullOrWhiteSpace(txtTenHangXe.Text))
             {
                 MessageBox.Show("Vui lòng nhập tên hãng xe?", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
-            else
+
+            try
             {
                 if (xuLyThem)
                 {
                     var nsx = new NhaSanXuat();
-                    nsx.TenNhaSanXuat = txtTenHangXe.Text;
-                    context.NhaSanXuats.Add(nsx);
+                    nsx.TenNhaSanXuat = txtTenHangXe.Text.Trim();
+
+                    // Ép EF Core hiểu đây là đối tượng hoàn toàn mới, bỏ qua tracking cũ
+                    context.Entry(nsx).State = Microsoft.EntityFrameworkCore.EntityState.Added;
                     context.SaveChanges();
+
+                    MessageBox.Show("Thêm thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
                 {
+                    // Sửa chữa (Giả sử bạn có biến luu ID đang chọn, ví dụ: idDangChon)
+                    // Thay "idDangChon" bằng tên biến hoặc cách bạn lấy ID thực tế đang chọn trên DataGridView
+                    int id = int.Parse(dataGridView.CurrentRow.Cells["ID"].Value.ToString());
+
                     var nsx = context.NhaSanXuats.Find(id);
                     if (nsx != null)
                     {
-                        nsx.TenNhaSanXuat = txtTenHangXe.Text;
-                        context.NhaSanXuats.Update(nsx);
+                        nsx.TenNhaSanXuat = txtTenHangXe.Text.Trim();
                         context.SaveChanges();
+                        MessageBox.Show("Sửa thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
-                frmHangXe_Load(sender, e);
+
+                // Gọi lại hàm load dữ liệu lên DataGridView ở đây (ví dụ: LoadData();)
+
+                // Reset lại trạng thái các nút
+                xuLyThem = false;
+                // Vô hiệu hóa/Kích hoạt lại các nút Thêm, Sửa, Xóa, Lưu... theo thiết kế của bạn
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Có lỗi xảy ra: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
