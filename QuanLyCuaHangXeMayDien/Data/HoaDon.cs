@@ -21,4 +21,17 @@ namespace QuanLyCuaHangXeMayDien.Data
         [ForeignKey("KhachHangID")]
         public virtual KhachHang KhachHang { get; set; } = null!;
     }
+    [NotMapped]
+    public class DanhSachHoaDon
+    {
+        public int ID { get; set; }
+        public int NhanVienID { get; set; }
+        public string? HoVaTenNhanVien { get; set; }
+        public int KhachHangID { get; set; }
+        public string? HoVaTenKhachHang { get; set; }
+        public DateTime NgayLap { get; set; }
+        public string? GhiChuHoaDon { get; set; }
+        public double? TongTienHoaDon { get; set; }
+        public string? XemChiTiet { get; set; }
+    }
 }

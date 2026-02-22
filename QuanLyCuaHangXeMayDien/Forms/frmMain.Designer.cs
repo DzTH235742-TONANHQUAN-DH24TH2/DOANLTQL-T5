@@ -40,6 +40,7 @@
             panel2 = new Panel();
             label1 = new Label();
             pnlContent = new Panel();
+            btnHoaDon = new Button();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
             SuspendLayout();
@@ -119,7 +120,7 @@
             btnThoat.FlatStyle = FlatStyle.Flat;
             btnThoat.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 163);
             btnThoat.ForeColor = SystemColors.ButtonHighlight;
-            btnThoat.Location = new Point(11, 388);
+            btnThoat.Location = new Point(13, 421);
             btnThoat.Name = "btnThoat";
             btnThoat.Size = new Size(149, 34);
             btnThoat.TabIndex = 0;
@@ -130,6 +131,7 @@
             // panel1
             // 
             panel1.BackColor = Color.SteelBlue;
+            panel1.Controls.Add(btnHoaDon);
             panel1.Controls.Add(btnLoaiXe);
             panel1.Controls.Add(btnThoat);
             panel1.Controls.Add(btnHangXe);
@@ -138,7 +140,7 @@
             panel1.Dock = DockStyle.Left;
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(181, 463);
+            panel1.Size = new Size(181, 467);
             panel1.TabIndex = 5;
             // 
             // panel2
@@ -170,14 +172,26 @@
             pnlContent.Dock = DockStyle.Fill;
             pnlContent.Location = new Point(181, 79);
             pnlContent.Name = "pnlContent";
-            pnlContent.Size = new Size(703, 384);
+            pnlContent.Size = new Size(703, 388);
             pnlContent.TabIndex = 7;
+            // 
+            // btnHoaDon
+            // 
+            btnHoaDon.BackColor = Color.LightCyan;
+            btnHoaDon.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 163);
+            btnHoaDon.Location = new Point(10, 341);
+            btnHoaDon.Name = "btnHoaDon";
+            btnHoaDon.Size = new Size(150, 34);
+            btnHoaDon.TabIndex = 5;
+            btnHoaDon.Text = "Hóa Đơn";
+            btnHoaDon.UseVisualStyleBackColor = false;
+            btnHoaDon.Click += btnHoaDon_Click;
             // 
             // frmMain
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(884, 463);
+            ClientSize = new Size(884, 467);
             Controls.Add(pnlContent);
             Controls.Add(panel2);
             Controls.Add(panel1);
@@ -203,5 +217,6 @@
         private Panel panel2;
         private Label label1;
         private Panel pnlContent;
+        private Button btnHoaDon;
     }
 }

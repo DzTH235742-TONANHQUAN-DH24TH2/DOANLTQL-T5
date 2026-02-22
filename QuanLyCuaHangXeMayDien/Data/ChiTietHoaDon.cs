@@ -24,3 +24,14 @@ namespace QuanLyCuaHangXeMayDien.Data
         public int DonGia { get; set; }
     }
 }
+    [NotMapped]
+    public class DanhSachHoaDon_ChiTiet
+    {
+        public int ID { get; set; }
+        public int HoaDonID { get; set; }
+        public int XeMayDienID { get; set; } // Đổi từ SanPhamID
+        public string TenXe { get; set; }    // Đổi từ TenSanPham
+        public short SoLuongBan { get; set; }
+        public int DonGiaBan { get; set; }
+        public int ThanhTien { get; set; }
+    }

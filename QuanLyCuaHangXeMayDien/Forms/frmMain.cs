@@ -51,6 +51,12 @@ namespace QuanLyCuaHangXeMayDien.Forms
             OpenChildForm(new frmNhanVien());
         }
 
+        private void btnHoaDon_Click(object sender, EventArgs e)
+        {
+            // Gọi hàm OpenChildForm giống hệt các nút khác
+            OpenChildForm(new frmHoaDon());
+        }
+
         private void btnThoat_Click(object sender, EventArgs e)
         {
             if (MessageBox.Show("Bạn có chắc chắn muốn thoát chương trình?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
