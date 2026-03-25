@@ -236,7 +236,7 @@
             btnXoa.TabIndex = 7;
             btnXoa.Text = "Xóa";
             btnXoa.UseVisualStyleBackColor = true;
-            btnXoa.Click += btnXoa_Click;
+           //btnXoa.Click += btnXoa_Click;
             // 
             // btnXacNhanBan
             // 
@@ -287,7 +287,7 @@
             cboXe.Name = "cboXe";
             cboXe.Size = new Size(182, 33);
             cboXe.TabIndex = 1;
-            cboXe.SelectionChangeCommitted += cboXe_SelectionChangeCommitted;
+            //cboXe.SelectionChangeCommitted += cboXe_SelectionChangeCommitted;
             // 
             // label4
             // 

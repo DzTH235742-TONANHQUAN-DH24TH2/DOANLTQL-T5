@@ -29,7 +29,6 @@
         private void InitializeComponent()
         {
             groupBox1 = new GroupBox();
-            groupBox2 = new GroupBox();
             panel1 = new Panel();
             btnXuat = new Button();
             btnNhap = new Button();
@@ -46,6 +45,7 @@
             btnThem = new Button();
             txtHoVaTen = new TextBox();
             label1 = new Label();
+            groupBox2 = new GroupBox();
             panel2 = new Panel();
             dataGridView = new DataGridView();
             ID = new DataGridViewTextBoxColumn();
@@ -53,8 +53,8 @@
             DienThoai = new DataGridViewTextBoxColumn();
             DiaChi = new DataGridViewTextBoxColumn();
             groupBox1.SuspendLayout();
-            groupBox2.SuspendLayout();
             panel1.SuspendLayout();
+            groupBox2.SuspendLayout();
             panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView).BeginInit();
             SuspendLayout();
@@ -69,17 +69,6 @@
             groupBox1.TabIndex = 4;
             groupBox1.TabStop = false;
             groupBox1.Text = "Thông Tin Khách Hàng";
-            // 
-            // groupBox2
-            // 
-            groupBox2.Controls.Add(panel2);
-            groupBox2.Dock = DockStyle.Fill;
-            groupBox2.Location = new Point(0, 161);
-            groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(922, 289);
-            groupBox2.TabIndex = 5;
-            groupBox2.TabStop = false;
-            groupBox2.Text = "Danh sách Khách hàng";
             // 
             // panel1
             // 
@@ -112,6 +101,7 @@
             btnXuat.TabIndex = 29;
             btnXuat.Text = "Xuất";
             btnXuat.UseVisualStyleBackColor = true;
+            btnXuat.Click += btnXuat_Click;
             // 
             // btnNhap
             // 
@@ -121,6 +111,7 @@
             btnNhap.TabIndex = 28;
             btnNhap.Text = "Nhập";
             btnNhap.UseVisualStyleBackColor = true;
+            btnNhap.Click += btnNhap_Click;
             // 
             // btnTimKiem
             // 
@@ -235,6 +226,17 @@
             label1.TabIndex = 15;
             label1.Text = "Họ và Tên :";
             // 
+            // groupBox2
+            // 
+            groupBox2.Controls.Add(panel2);
+            groupBox2.Dock = DockStyle.Fill;
+            groupBox2.Location = new Point(0, 161);
+            groupBox2.Name = "groupBox2";
+            groupBox2.Size = new Size(922, 289);
+            groupBox2.TabIndex = 5;
+            groupBox2.TabStop = false;
+            groupBox2.Text = "Danh sách Khách hàng";
+            // 
             // panel2
             // 
             panel2.Anchor = AnchorStyles.Top;
@@ -297,9 +299,9 @@
             Text = "Khách Hàng";
             Load += frmKhachHang_Load;
             groupBox1.ResumeLayout(false);
-            groupBox2.ResumeLayout(false);
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
+            groupBox2.ResumeLayout(false);
             panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dataGridView).EndInit();
             ResumeLayout(false);

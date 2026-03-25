@@ -45,6 +45,7 @@
             NgayLap = new DataGridViewTextBoxColumn();
             TongTienHoaDon = new DataGridViewTextBoxColumn();
             XemChiTiet = new DataGridViewTextBoxColumn();
+            btnNhap = new Button();
             groupBox1.SuspendLayout();
             panel2.SuspendLayout();
             panel1.SuspendLayout();
@@ -58,7 +59,7 @@
             groupBox1.Dock = DockStyle.Fill;
             groupBox1.Location = new Point(0, 0);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(800, 450);
+            groupBox1.Size = new Size(918, 450);
             groupBox1.TabIndex = 0;
             groupBox1.TabStop = false;
             groupBox1.Text = "Dan Sách Hóa Đơn";
@@ -66,6 +67,7 @@
             // panel2
             // 
             panel2.Anchor = AnchorStyles.None;
+            panel2.Controls.Add(btnNhap);
             panel2.Controls.Add(btnXuat);
             panel2.Controls.Add(btnTimKiem);
             panel2.Controls.Add(btnInHoaDon);
@@ -73,9 +75,9 @@
             panel2.Controls.Add(btnThoat);
             panel2.Controls.Add(btnSua);
             panel2.Controls.Add(btnXoa);
-            panel2.Location = new Point(12, 323);
+            panel2.Location = new Point(47, 323);
             panel2.Name = "panel2";
-            panel2.Size = new Size(776, 115);
+            panel2.Size = new Size(859, 115);
             panel2.TabIndex = 1;
             // 
             // btnXuat
@@ -86,6 +88,7 @@
             btnXuat.TabIndex = 32;
             btnXuat.Text = "Xuất";
             btnXuat.UseVisualStyleBackColor = true;
+            btnXuat.Click += btnXuat_Click;
             // 
             // btnTimKiem
             // 
@@ -151,7 +154,7 @@
             // 
             panel1.Anchor = AnchorStyles.None;
             panel1.Controls.Add(dataGridView);
-            panel1.Location = new Point(12, 30);
+            panel1.Location = new Point(71, 30);
             panel1.Name = "panel1";
             panel1.Size = new Size(776, 287);
             panel1.TabIndex = 0;
@@ -213,14 +216,23 @@
             XemChiTiet.MinimumWidth = 8;
             XemChiTiet.Name = "XemChiTiet";
             // 
+            // btnNhap
+            // 
+            btnNhap.Location = new Point(768, 36);
+            btnNhap.Name = "btnNhap";
+            btnNhap.Size = new Size(68, 34);
+            btnNhap.TabIndex = 33;
+            btnNhap.Text = "Nhập";
+            btnNhap.UseVisualStyleBackColor = true;
+            btnNhap.Click += btnNhap_Click;
+            // 
             // frmHoaDon
             // 
             AutoScaleMode = AutoScaleMode.None;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(918, 450);
             Controls.Add(groupBox1);
             Name = "frmHoaDon";
             Text = "Hóa Đơn";
-            Load += frmHoaDon_Load_1;
             groupBox1.ResumeLayout(false);
             panel2.ResumeLayout(false);
             panel1.ResumeLayout(false);
@@ -247,5 +259,6 @@
         private DataGridViewTextBoxColumn NgayLap;
         private DataGridViewTextBoxColumn TongTienHoaDon;
         private DataGridViewTextBoxColumn XemChiTiet;
+        private Button btnNhap;
     }
 }

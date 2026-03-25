@@ -13,212 +13,92 @@ namespace QuanLyCuaHangXeMayDien.Forms
         int id;
         BindingList<DanhSachHoaDon_ChiTiet> hoaDonChiTiet = new BindingList<DanhSachHoaDon_ChiTiet>();
 
-        public frmHoaDon_ChiTiet()
-        {
-            InitializeComponent();
-        }
-
-        public frmHoaDon_ChiTiet(int maHoaDon)
-        {
-            InitializeComponent();
-            id = maHoaDon;
-        }
-
-        public void LayNhanVienVaoComboBox()
-        {
-            cboNhanVien.DataSource = context.NhanVien.ToList();
-            cboNhanVien.ValueMember = "ID";
-            cboNhanVien.DisplayMember = "HoTen";
-        }
-
-        public void LayKhachHangVaoComboBox()
-        {
-            cboKhachHang.DataSource = context.KhachHang.ToList();
-            cboKhachHang.ValueMember = "ID";
-            cboKhachHang.DisplayMember = "HoTen";
-        }
-
-        public void LayXeVaoComboBox()
-        {
-            cboXe.DataSource = context.XeMayDien.ToList();
-            cboXe.ValueMember = "ID";
-            cboXe.DisplayMember = "TenXe"; // Giả định trong class XeMayDien bạn đặt tên xe là TenXe
-        }
-
-        public void BatTatChucNang()
-        {
-            if (id == 0 && dataGridView.Rows.Count == 0)
-            {
-                cboKhachHang.Text = "";
-                cboNhanVien.Text = "";
-                cboXe.Text = "";
-                numSoLuongBan.Value = 1;
-                numDonGiaBan.Value = 0;
-            }
-            btnLuuHoaDon.Enabled = dataGridView.Rows.Count > 0;
-            btnXoa.Enabled = dataGridView.Rows.Count > 0;
-        }
+        public frmHoaDon_ChiTiet() { InitializeComponent(); }
+        public frmHoaDon_ChiTiet(int maHoaDon) { InitializeComponent(); id = maHoaDon; }
 
         private void frmHoaDon_ChiTiet_Load(object sender, EventArgs e)
         {
-            LayNhanVienVaoComboBox();
-            LayKhachHangVaoComboBox();
-            LayXeVaoComboBox();
+            cboNhanVien.DataSource = context.NhanVien.ToList();
+            cboNhanVien.ValueMember = "ID"; cboNhanVien.DisplayMember = "HoTen";
+
+            cboKhachHang.DataSource = context.KhachHang.ToList();
+            cboKhachHang.ValueMember = "ID"; cboKhachHang.DisplayMember = "HoTen";
+
+            cboXe.DataSource = context.XeMayDien.ToList();
+            cboXe.ValueMember = "ID"; cboXe.DisplayMember = "TenXe";
 
             dataGridView.AutoGenerateColumns = false;
 
             if (id != 0)
             {
-                var hoaDon = context.HoaDon.Where(r => r.ID == id).SingleOrDefault();
-                if (hoaDon != null)
-                {
-                    cboNhanVien.SelectedValue = hoaDon.NhanVienID;
-                    cboKhachHang.SelectedValue = hoaDon.KhachHangID;
-                }
+                var hd = context.HoaDon.Find(id);
+                if (hd != null) { cboNhanVien.SelectedValue = hd.NhanVienID; cboKhachHang.SelectedValue = hd.KhachHangID; }
 
                 var ct = context.ChiTietHoaDons.Where(r => r.HoaDonID == id).Select(r => new DanhSachHoaDon_ChiTiet
                 {
                     ID = r.ID,
-                    HoaDonID = r.HoaDonID,
                     XeMayDienID = r.XeMayDienID,
                     TenXe = r.XeMayDien.TenXe,
                     SoLuongBan = (short)r.SoLuong,
                     DonGiaBan = r.DonGia,
                     ThanhTien = r.SoLuong * r.DonGia
                 }).ToList();
-
                 hoaDonChiTiet = new BindingList<DanhSachHoaDon_ChiTiet>(ct);
             }
-
             dataGridView.DataSource = hoaDonChiTiet;
-            BatTatChucNang();
-        }
-
-        private void cboXe_SelectionChangeCommitted(object sender, EventArgs e)
-        {
-            if (cboXe.SelectedValue != null)
-            {
-                int maXe = Convert.ToInt32(cboXe.SelectedValue.ToString());
-                var xe = context.XeMayDien.Find(maXe);
-                if (xe != null)
-                {
-                    numDonGiaBan.Value = xe.DonGia; // Giả định class XeMayDien có biến DonGia
-                }
-            }
         }
 
         private void btnXacNhanBan_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(cboXe.Text))
-                MessageBox.Show("Vui lòng chọn xe.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            else if (numSoLuongBan.Value <= 0)
-                MessageBox.Show("Số lượng bán phải lớn hơn 0.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            else if (numDonGiaBan.Value <= 0)
-                MessageBox.Show("Đơn giá bán phải lớn hơn 0.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            if (cboXe.SelectedValue == null) { MessageBox.Show("Vui lòng chọn xe!"); return; }
+
+            int maXe = Convert.ToInt32(cboXe.SelectedValue);
+            var existing = hoaDonChiTiet.FirstOrDefault(x => x.XeMayDienID == maXe);
+
+            if (existing != null)
+            {
+                existing.SoLuongBan = (short)numSoLuongBan.Value;
+                existing.DonGiaBan = (int)numDonGiaBan.Value;
+                existing.ThanhTien = (int)(numSoLuongBan.Value * numDonGiaBan.Value);
+                dataGridView.Refresh();
+            }
             else
             {
-                int maXe = Convert.ToInt32(cboXe.SelectedValue.ToString());
-                var chiTiet = hoaDonChiTiet.FirstOrDefault(x => x.XeMayDienID == maXe);
-
-                if (chiTiet != null)
+                hoaDonChiTiet.Add(new DanhSachHoaDon_ChiTiet
                 {
-                    chiTiet.SoLuongBan = Convert.ToInt16(numSoLuongBan.Value);
-                    chiTiet.DonGiaBan = Convert.ToInt32(numDonGiaBan.Value);
-                    chiTiet.ThanhTien = Convert.ToInt32(numSoLuongBan.Value * numDonGiaBan.Value);
-                    dataGridView.Refresh();
-                }
-                else
-                {
-                    DanhSachHoaDon_ChiTiet ct = new DanhSachHoaDon_ChiTiet
-                    {
-                        ID = 0,
-                        HoaDonID = id,
-                        XeMayDienID = maXe,
-                        TenXe = cboXe.Text,
-                        SoLuongBan = Convert.ToInt16(numSoLuongBan.Value),
-                        DonGiaBan = Convert.ToInt32(numDonGiaBan.Value),
-                        ThanhTien = Convert.ToInt32(numSoLuongBan.Value * numDonGiaBan.Value)
-                    };
-                    hoaDonChiTiet.Add(ct);
-                }
-                BatTatChucNang();
-            }
-        }
-
-        private void btnXoa_Click(object sender, EventArgs e)
-        {
-            if (dataGridView.CurrentRow != null)
-            {
-                int maXe = Convert.ToInt32(dataGridView.CurrentRow.Cells["XeMayDienID"].Value.ToString());
-                var chiTiet = hoaDonChiTiet.FirstOrDefault(x => x.XeMayDienID == maXe);
-                if (chiTiet != null)
-                {
-                    hoaDonChiTiet.Remove(chiTiet);
-                }
-                BatTatChucNang();
+                    XeMayDienID = maXe,
+                    TenXe = cboXe.Text,
+                    SoLuongBan = (short)numSoLuongBan.Value,
+                    DonGiaBan = (int)numDonGiaBan.Value,
+                    ThanhTien = (int)(numSoLuongBan.Value * numDonGiaBan.Value)
+                });
             }
         }
 
         private void btnLuuHoaDon_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(cboNhanVien.Text))
-                MessageBox.Show("Vui lòng chọn nhân viên.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            else if (string.IsNullOrWhiteSpace(cboKhachHang.Text))
-                MessageBox.Show("Vui lòng chọn khách hàng.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            if (hoaDonChiTiet.Count == 0) { MessageBox.Show("Chưa có xe nào trong hóa đơn!"); return; }
+
+            HoaDon hd = (id == 0) ? new HoaDon { NgayLap = DateTime.Now } : context.HoaDon.Find(id);
+            hd.NhanVienID = (int)cboNhanVien.SelectedValue;
+            hd.KhachHangID = (int)cboKhachHang.SelectedValue;
+
+            if (id == 0) context.HoaDon.Add(hd);
             else
             {
-                if (id != 0)
-                {
-                    HoaDon hd = context.HoaDon.Find(id);
-                    if (hd != null)
-                    {
-                        hd.NhanVienID = Convert.ToInt32(cboNhanVien.SelectedValue.ToString());
-                        hd.KhachHangID = Convert.ToInt32(cboKhachHang.SelectedValue.ToString());
-                        context.HoaDon.Update(hd);
-
-                        var old = context.ChiTietHoaDons.Where(r => r.HoaDonID == id).ToList();
-                        context.ChiTietHoaDons.RemoveRange(old);
-
-                        foreach (var item in hoaDonChiTiet.ToList())
-                        {
-                            ChiTietHoaDon ct = new ChiTietHoaDon();
-                            ct.HoaDonID = id;
-                            ct.XeMayDienID = item.XeMayDienID;
-                            ct.SoLuong = item.SoLuongBan;
-                            ct.DonGia = item.DonGiaBan;
-                            context.ChiTietHoaDons.Add(ct);
-                        }
-                        context.SaveChanges();
-                    }
-                }
-                else
-                {
-                    HoaDon hd = new HoaDon();
-                    hd.NhanVienID = Convert.ToInt32(cboNhanVien.SelectedValue.ToString());
-                    hd.KhachHangID = Convert.ToInt32(cboKhachHang.SelectedValue.ToString());
-                    hd.NgayLap = DateTime.Now;
-                    context.HoaDon.Add(hd);
-                    context.SaveChanges();
-
-                    foreach (var item in hoaDonChiTiet.ToList())
-                    {
-                        ChiTietHoaDon ct = new ChiTietHoaDon();
-                        ct.HoaDonID = hd.ID;
-                        ct.XeMayDienID = item.XeMayDienID;
-                        ct.SoLuong = item.SoLuongBan;
-                        ct.DonGia = item.DonGiaBan;
-                        context.ChiTietHoaDons.Add(ct);
-                    }
-                    context.SaveChanges();
-                }
-                MessageBox.Show("Đã lưu thành công!", "Hoàn tất", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                this.Close();
+                var oldCt = context.ChiTietHoaDons.Where(x => x.HoaDonID == id);
+                context.ChiTietHoaDons.RemoveRange(oldCt);
             }
-        }
+            context.SaveChanges();
 
-        private void btnThoat_Click(object sender, EventArgs e)
-        {
+            foreach (var item in hoaDonChiTiet)
+                context.ChiTietHoaDons.Add(new ChiTietHoaDon { HoaDonID = hd.ID, XeMayDienID = item.XeMayDienID, SoLuong = item.SoLuongBan, DonGia = item.DonGiaBan });
+
+            context.SaveChanges();
+            MessageBox.Show("Lưu thành công!");
             this.Close();
         }
+
+        private void btnThoat_Click(object sender, EventArgs e) => this.Close();
     }
 }

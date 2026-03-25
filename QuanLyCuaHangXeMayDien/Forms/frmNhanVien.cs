@@ -3,6 +3,8 @@ using System.Linq;
 using System.Windows.Forms;
 using QuanLyCuaHangXeMayDien.Data;
 using BCrypt.Net;
+using ClosedXML.Excel;
+using System.Data;
 
 namespace QuanLyCuaHangXeMayDien.Forms
 {
@@ -78,9 +80,9 @@ namespace QuanLyCuaHangXeMayDien.Forms
             xuLyThem = false;
             BatTatChucNang(true);
 
-            if (dataGridView.CurrentRow != null && dataGridView.CurrentRow.Cells["ID"].Value != null)
+            if (dataGridView.CurrentRow != null && dataGridView.CurrentRow.Cells["lD"].Value != null)
             {
-                id = Convert.ToInt32(dataGridView.CurrentRow.Cells["ID"].Value.ToString());
+                id = Convert.ToInt32(dataGridView.CurrentRow.Cells["lD"].Value.ToString());
             }
         }
 
@@ -135,9 +137,9 @@ namespace QuanLyCuaHangXeMayDien.Forms
         {
             if (MessageBox.Show("Xác nhận xóa?", "Xóa", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
-                if (dataGridView.CurrentRow != null && dataGridView.CurrentRow.Cells["ID"].Value != null)
+                if (dataGridView.CurrentRow != null && dataGridView.CurrentRow.Cells[0].Value != null)
                 {
-                    id = Convert.ToInt32(dataGridView.CurrentRow.Cells["ID"].Value.ToString());
+                    id = Convert.ToInt32(dataGridView.CurrentRow.Cells[0].Value.ToString());
                     var nv = context.NhanViens.Find(id);
 
                     if (nv != null)
@@ -160,6 +162,118 @@ namespace QuanLyCuaHangXeMayDien.Forms
             this.Close();
         }
 
-        
+        private void btnNhap_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Title = "Nhập dữ liệu nhân viên từ Excel";
+            openFileDialog.Filter = "Tập tin Excel (*.xlsx)|*.xlsx";
+            openFileDialog.Multiselect = false;
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    DataTable table = new DataTable();
+                    using (XLWorkbook workbook = new XLWorkbook(openFileDialog.FileName))
+                    {
+                        IXLWorksheet worksheet = workbook.Worksheet(1);
+                        bool firstRow = true;
+                        string readRange = "1:1";
+
+                        foreach (IXLRow row in worksheet.RowsUsed())
+                        {
+                            if (firstRow)
+                            {
+                                readRange = string.Format("{0}:{1}", 1, row.LastCellUsed().Address.ColumnNumber);
+                                foreach (IXLCell cell in row.Cells(readRange))
+                                {
+                                    table.Columns.Add(cell.Value.ToString());
+                                }
+                                firstRow = false;
+                            }
+                            else
+                            {
+                                table.Rows.Add();
+                                int cellIndex = 0;
+                                foreach (IXLCell cell in row.Cells(readRange))
+                                {
+                                    table.Rows[table.Rows.Count - 1][cellIndex] = cell.Value.ToString();
+                                    cellIndex++;
+                                }
+                            }
+                        }
+                    }
+
+                    if (table.Rows.Count > 0)
+                    {
+                        foreach (DataRow r in table.Rows)
+                        {
+                            NhanVien nv = new NhanVien();
+                            nv.HoTen = r["HoTen"].ToString();
+                            nv.TenDangNhap = r["TenDangNhap"].ToString();
+                            nv.MatKhau = r["MatKhau"].ToString();
+                            // Nếu bảng Nhân viên của bạn có cột QuyenHan (kiểu int) thì bỏ comment dòng dưới và sửa lại cho đúng
+                            // nv.QuyenHan = Convert.ToInt32(r["QuyenHan"]); 
+
+                            context.NhanVien.Add(nv);
+                        }
+                        context.SaveChanges();
+                        MessageBox.Show("Đã nhập thành công " + table.Rows.Count + " nhân viên.", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                        frmNhanVien_Load(sender, e);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Tập tin Excel rỗng.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi: Kiểm tra lại tên cột trong file Excel xem đã đúng chuẩn chưa (HoTen, TenDangNhap, MatKhau).\nChi tiết: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void btnXuat_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Title = "Xuất dữ liệu nhân viên ra Excel";
+            saveFileDialog.Filter = "Tập tin Excel (*.xlsx)|*.xlsx";
+            saveFileDialog.FileName = "NhanVien_" + DateTime.Now.ToString("dd_MM_yyyy") + ".xlsx";
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                try
+                {
+                    DataTable table = new DataTable();
+                    table.Columns.AddRange(new DataColumn[] {
+                new DataColumn("ID", typeof(int)),
+                new DataColumn("HoTen", typeof(string)),
+                new DataColumn("TenDangNhap", typeof(string)),
+                new DataColumn("MatKhau", typeof(string))
+            });
+
+                    var danhSachNV = context.NhanVien.ToList();
+                    foreach (var nv in danhSachNV)
+                    {
+                        table.Rows.Add(nv.ID, nv.HoTen, nv.TenDangNhap, nv.MatKhau);
+                    }
+
+                    using (XLWorkbook wb = new XLWorkbook())
+                    {
+                        var sheet = wb.Worksheets.Add(table, "NhanVien");
+                        sheet.Columns().AdjustToContents();
+                        wb.SaveAs(saveFileDialog.FileName);
+
+                        MessageBox.Show("Đã xuất dữ liệu ra tập tin Excel thành công.", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi: " + ex.Message, "Lỗi xuất file", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
     }
 }

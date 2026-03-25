@@ -30,6 +30,8 @@
         {
             groupBox1 = new GroupBox();
             panel1 = new Panel();
+            btnNhap = new Button();
+            btnXuat = new Button();
             btnThoat = new Button();
             btnHuyBo = new Button();
             btnLuu = new Button();
@@ -64,6 +66,8 @@
             // panel1
             // 
             panel1.Anchor = AnchorStyles.None;
+            panel1.Controls.Add(btnNhap);
+            panel1.Controls.Add(btnXuat);
             panel1.Controls.Add(btnThoat);
             panel1.Controls.Add(btnHuyBo);
             panel1.Controls.Add(btnLuu);
@@ -74,8 +78,28 @@
             panel1.Controls.Add(label1);
             panel1.Location = new Point(18, 30);
             panel1.Name = "panel1";
-            panel1.Size = new Size(762, 114);
+            panel1.Size = new Size(931, 114);
             panel1.TabIndex = 0;
+            // 
+            // btnNhap
+            // 
+            btnNhap.Location = new Point(738, 12);
+            btnNhap.Name = "btnNhap";
+            btnNhap.Size = new Size(112, 34);
+            btnNhap.TabIndex = 17;
+            btnNhap.Text = "Nhập";
+            btnNhap.UseVisualStyleBackColor = true;
+            btnNhap.Click += btnNhap_Click;
+            // 
+            // btnXuat
+            // 
+            btnXuat.Location = new Point(738, 71);
+            btnXuat.Name = "btnXuat";
+            btnXuat.Size = new Size(112, 34);
+            btnXuat.TabIndex = 16;
+            btnXuat.Text = "Xuất";
+            btnXuat.UseVisualStyleBackColor = true;
+            btnXuat.Click += btnXuat_Click;
             // 
             // btnThoat
             // 
@@ -85,6 +109,7 @@
             btnThoat.TabIndex = 15;
             btnThoat.Text = "Thoát";
             btnThoat.UseVisualStyleBackColor = true;
+            btnThoat.Click += btnThoat_Click;
             // 
             // btnHuyBo
             // 
@@ -94,6 +119,7 @@
             btnHuyBo.TabIndex = 14;
             btnHuyBo.Text = "Hủy bỏ";
             btnHuyBo.UseVisualStyleBackColor = true;
+            btnHuyBo.Click += btnHuyBo_Click;
             // 
             // btnLuu
             // 
@@ -104,6 +130,7 @@
             btnLuu.TabIndex = 13;
             btnLuu.Text = "Lưu";
             btnLuu.UseVisualStyleBackColor = true;
+            btnLuu.Click += btnLuu_Click;
             // 
             // btnXoa
             // 
@@ -114,6 +141,7 @@
             btnXoa.TabIndex = 12;
             btnXoa.Text = "Xóa";
             btnXoa.UseVisualStyleBackColor = true;
+            btnXoa.Click += btnXoa_Click;
             // 
             // btnSua
             // 
@@ -123,6 +151,7 @@
             btnSua.TabIndex = 11;
             btnSua.Text = "Sửa";
             btnSua.UseVisualStyleBackColor = true;
+            btnSua.Click += btnSua_Click;
             // 
             // btnThem
             // 
@@ -132,6 +161,7 @@
             btnThem.TabIndex = 10;
             btnThem.Text = "Thêm";
             btnThem.UseVisualStyleBackColor = true;
+            btnThem.Click += btnThem_Click;
             // 
             // txtTenXe
             // 
@@ -233,5 +263,7 @@
         private DataGridView dataGridView;
         private DataGridViewTextBoxColumn lD;
         private DataGridViewTextBoxColumn TenXe;
+        private Button btnNhap;
+        private Button btnXuat;
     }
 }
